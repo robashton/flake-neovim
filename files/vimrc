@@ -1,4 +1,6 @@
 " Old school needs making lua
+" when I can be arsed
+"
 set tabstop=2
 set shiftwidth=2
 set expandtab
@@ -25,7 +27,8 @@ set lazyredraw
 
 
 " Fast ctrl-p functionality
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+" let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
@@ -180,13 +183,6 @@ endif
 
 autocmd BufRead * call Presentation()
 
-
-" load the Lua written by nix config
-" This needs to be something else..
-source ~/.config/nvim/extra.lua
-
-" The LSP is loaded by lua, configire it here
-" We'd do this in Lua but the API isn't really there
 
 " Faster hover
 set updatetime=1000

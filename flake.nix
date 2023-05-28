@@ -168,7 +168,12 @@
         packages = {
           default = pkgs.wrapNeovim pkgs.neovim-nightly {
             configure = {
-              customRC = (builtins.readFile ./files/vimrc);
+              customRC = ''
+                  ${builtins.readFile ./files/vimrc}
+                  lua << EOF
+                    ${builtins.readFile ./files/lsp.lua}
+                  EOF
+                '';
               packages.myplugins = {
                 start = [
                   pkgs.vimPlugins.ack-vim

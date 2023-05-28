@@ -154,26 +154,8 @@
        };
       in
       rec {
-        apps = rec {
-          nvim = {
-            type = "app";
-            program = "${packages.default}/bin/nvim";
-          };
-          default = nvim;
-        };
 
-        overlays.default = f: p: {
-          inherit (pkgs) neovim-nightly pluginOverlay;
-        };
-
-        nixosModules.hm = {
-          imports = [
-            { nixpkgs.overlays = [ overlays.default ]; }
-          ];
-        };
-
-        packages = {
-          default = pkgs.wrapNeovim pkgs.neovim-nightly {
+        robs-neovim = pkgs.wrapNeovim pkgs.neovim-nightly {
             configure = {
               customRC = ''
                   ${builtins.readFile ./files/vimrc}
@@ -221,6 +203,28 @@
               };
             };
           };
+
+        apps = rec {
+          nvim = {
+            type = "app";
+            program = "${packages.default}/bin/nvim";
+          };
+          default = nvim;
+        };
+
+        overlays.default = f: p: {
+          inherit (pkgs)  pluginOverlay;
+          inherit robs-neovim;
+        };
+
+        nixosModules.hm = {
+          imports = [
+            { nixpkgs.overlays = [ overlays.default ]; }
+          ];
+        };
+
+        packages = {
+          default = robs-neovim;
         };
       }
     );

@@ -157,6 +157,8 @@
 
         robs-neovim = pkgs.wrapNeovim pkgs.neovim-nightly {
             configure = {
+              viAlias = true;
+              vimAlias = true;
               customRC = ''
                   ${builtins.readFile ./files/vimrc}
                   lua << EOF

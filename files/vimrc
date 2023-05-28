@@ -1,0 +1,228 @@
+" Old school needs making lua
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set autoindent
+set relativenumber
+set mouse=
+
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+
+let g:vim_json_syntax_conceal = 0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+let g:indentLine_setConceal = 0
+
+if has('termguicolors')
+  set termguicolors
+endif
+syntax on
+filetype plugin indent on
+set lazyredraw
+
+
+
+
+" Fast ctrl-p functionality
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*,*.d,*.beam
+
+" Ditto for ack
+let g:ackprg="ack -H --nocolor --nogroup --column"
+if executable("ag")
+  let g:ackprg="ag --nogroup --nocolor --column"
+  set grepprg=ag\ --noheading\ --nogroup\ --nocolor
+endif
+
+" Search for current symbol with Ack
+noremap <Leader>a :Ack <cword><cr> --ignore-dir input
+
+" Purescript indentation does my tit in when trying to write code
+"let g:purescript_disable_indent = 1
+"autocmd FileType purs setlocal noai nocin nosi inde=
+
+" It's dirty, but this is an easy way to resize my windows
+nnoremap <C-left> :vertical resize -10<cr>
+nnoremap <C-down> :resize +10<cr>
+nnoremap <C-up> :resize -10<cr>
+nnoremap <C-right> :vertical resize +10<cr>
+
+" I like a solid line
+set fcs+=vert:│
+
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
+
+" Shove all  the temporary files in one place
+set swapfile
+set dir=~/tmp
+set backupdir=~/tmp
+
+" Seeing as we use this a lot
+map <C-n> :NERDTreeToggle<CR>
+
+" Get rid of default f behaviour
+nmap f <Plug>(easymotion-bd-f)
+nmap F <Plug>(easymotion-overwin-f)
+
+"Gotta do it this way or the theme won't get loaded"
+function! SetDarkTheme()
+  colorscheme Tomorrow-Night-Bright
+  highlight NonText ctermfg=black
+  highlight SpellBad ctermfg=black
+  highlight VertSplit cterm=none gui=none
+  highlight clear SignColumn
+  highlight CursorLine cterm=none ctermbg=235
+  highlight LineNr ctermfg=darkgrey
+  highlight StatusLine ctermfg=white ctermbg=darkblue
+  highlight StatusLineNC ctermfg=white ctermbg=blue
+  highlight Normal ctermbg=none
+
+  highlight link LspDiagnosticsSignError SpellBad
+  highlight link LspDiagnosticsSignWarn SpellCap
+  highlight link LspDiagnosticsSignWarning SpellCap
+  highlight link LspDiagnosticsSignHint SpellCap
+  highlight link LspDiagnosticsSignInfo SpellRare
+
+  hi Pmenu           guifg=#66D9EF guibg=#000000
+  hi PmenuSel                      guibg=#808080
+  hi PmenuSbar                     guibg=#080808
+  hi PmenuThumb      guifg=#66D9EF
+endfunction
+
+" Working outside in the sun
+function! SetLightTheme()
+  colorscheme default
+  highlight NonText ctermfg=black
+  highlight VertSplit cterm=none gui=none
+  highlight clear SignColumn
+  highlight CursorLine cterm=none ctermbg=lightgrey
+  highlight LineNr ctermfg=darkgrey
+  highlight StatusLine ctermfg=darkblue ctermbg=white
+  highlight StatusLineNC ctermfg=darkgrey ctermbg=blue
+endfunction
+
+function! SetSolarized()
+  set background=dark
+  colorscheme solarized
+endfunction
+
+function! Presentation()
+  if !empty(glob(".pres"))
+    set norelativenumber
+    hi clear CursorLine
+    hi clear Cursor
+    hi clear CursorColumn
+    set norelativenumber
+    let g:airline#extensions#tabline#enabled = 0
+    let g:loaded_airline = 0
+    let s:hidden_all = 1
+    set noshowmode
+    set noruler
+    set laststatus=0
+    set noshowcmd
+  endif
+endfunction
+
+augroup theming
+  autocmd!
+  autocmd VimEnter * call SetDarkTheme()
+augroup END
+
+" Hide all the GUI if we're in gvim (Which these days is never)
+set guioptions+=LlRrb
+set guioptions-=LlRrb
+set guioptions-=M
+set guioptions-=m
+set guioptions-=T
+"set guiheadroom=0
+set guifont=Cascadia\ Code\ 10
+
+" Disable the mouse as much as we can
+noremap <ScrollWheelUp>      <nop>
+noremap <S-ScrollWheelUp>    <nop>
+noremap <C-ScrollWheelUp>    <nop>
+noremap <ScrollWheelDown>    <nop>
+noremap <S-ScrollWheelDown>  <nop>
+noremap <C-ScrollWheelDown>  <nop>
+noremap <ScrollWheelLeft>    <nop>
+noremap <S-ScrollWheelLeft>  <nop>
+noremap <C-ScrollWheelLeft>  <nop>
+noremap <ScrollWheelRight>   <nop>
+noremap <S-ScrollWheelRight> <nop>
+noremap <C-ScrollWheelRight> <nop>
+
+autocmd BufWritePre *.erl :%s/\s\+$//e " Get rid of trailing whitespace in erlang only
+
+if !empty(glob("rebar.config"))
+  :set path+=apps/**
+  :set path+=deps/**
+endif
+
+if !empty(glob(".git"))
+  function! GitLsFilesModified(A,L,P)
+    let pattern = a:A
+    if len(pattern) > 0
+      return split(system("git ls-files --modified \| grep " . pattern), "\n")
+    else
+      return split(system("git ls-files --modified"), "\n")
+    endif
+  endfunction
+  command! -complete=customlist,GitLsFilesModified -nargs=1 G :edit <args>
+endif
+
+autocmd BufRead * call Presentation()
+
+
+" load the Lua written by nix config
+" This needs to be something else..
+source ~/.config/nvim/extra.lua
+
+" The LSP is loaded by lua, configire it here
+" We'd do this in Lua but the API isn't really there
+
+" Faster hover
+set updatetime=1000
+
+" Omni everything if we can
+filetype plugin on
+
+augroup AutoActionsLsp
+  autocmd!
+  autocmd BufWritePre * lua vim.lsp.buf.format()
+augroup END
+
+" Allow project specific defaults (mostly override the above)
+if filereadable(".vim.custom")
+    so .vim.custom
+endif
+
+" Ditto, but in lua
+if filereadable(".vim.lua")
+    so .vim.lua
+endif
+
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+" Reserve space for the errors
+set signcolumn=yes
+
+"autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs
+"\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
+
+let g:dap_virtual_text = v:true
+
+
+au FileType rust call rainbow#load()
+

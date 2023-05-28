@@ -597,6 +597,22 @@
         "type": "github"
       }
     },
+    "purescript-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1675674661,
+        "narHash": "sha256-IrPiiDghh5qdeaTM6M4oRzay+LvqL3sdoiM2m89O4pA=",
+        "owner": "raichoo",
+        "repo": "purescript-vim",
+        "rev": "82348352e6568fcc0385bd7c99a8ead3a479feea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raichoo",
+        "repo": "purescript-vim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "cmp-buffer": "cmp-buffer",
@@ -615,6 +631,7 @@
         "nvim-dap-virtual-text": "nvim-dap-virtual-text",
         "plenary": "plenary",
         "popup": "popup",
+        "purescript-vim": "purescript-vim",
         "rust-tools": "rust-tools",
         "telescope": "telescope",
         "vim-airline": "vim-airline",

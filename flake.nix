@@ -96,6 +96,12 @@
       url = "github:hrsh7th/vim-vsnip";
       flake = false;
     };
+    purescript-vim = {
+      url = "github:raichoo/purescript-vim";
+      flake = false;
+    };
+
+
   };
 
   outputs = inputs @ { nixpkgs, neovim-nightly-overlay, flake-utils, ... }:
@@ -140,6 +146,7 @@
          "cmp-path"
          "cmp-buffer"
          "vim-vsnip"
+         "purescript-vim"
        ];
 
        pluginOverlay = _: _:  {
@@ -209,6 +216,7 @@
                   pkgs.neovimPlugins.cmp-path
                   pkgs.neovimPlugins.cmp-buffer
                   pkgs.neovimPlugins.vim-vsnip
+                  pkgs.neovimPlugins.purescript-vim
                 ];
               };
             };

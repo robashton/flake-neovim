@@ -8,12 +8,17 @@
 
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+      neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = github:numtide/flake-utils;
 
     color-schemes = {
       url = "github:flazz/vim-colorschemes";
+      flake = false;
+    };
+
+    markdown-preview = {
+      url = "github:iamcco/markdown-preview.nvim";
       flake = false;
     };
 
@@ -147,6 +152,7 @@
          "cmp-buffer"
          "vim-vsnip"
          "purescript-vim"
+         "markdown-preview"
        ];
 
        pluginOverlay = _: _:  {
@@ -201,6 +207,7 @@
                   pkgs.neovimPlugins.cmp-buffer
                   pkgs.neovimPlugins.vim-vsnip
                   pkgs.neovimPlugins.purescript-vim
+                  pkgs.neovimPlugins.markdown-preview
                 ];
               };
             };
@@ -216,7 +223,6 @@
 
         overlays.default = f: p: {
           inherit (pkgs)  pluginOverlay;
-          inherit robs-neovim;
         };
 
         nixosModules.hm = {

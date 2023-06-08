@@ -337,6 +337,22 @@
         "type": "github"
       }
     },
+    "markdown-preview": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1652448059,
+        "narHash": "sha256-e1Buvu/lkEt9V5LVDFKWTasnSX6EdtRgWyVDZA8LpUE=",
+        "owner": "iamcco",
+        "repo": "markdown-preview.nvim",
+        "rev": "02cc3874738bc0f86e4b91f09b8a0ac88aef8e96",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iamcco",
+        "repo": "markdown-preview.nvim",
+        "type": "github"
+      }
+    },
     "neovim-flake": {
       "inputs": {
         "flake-utils": "flake-utils_3",
@@ -623,6 +639,7 @@
         "flake-utils": "flake-utils",
         "lsp-config": "lsp-config",
         "lsp_extensions": "lsp_extensions",
+        "markdown-preview": "markdown-preview",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs_2",
         "nvim-cmp": "nvim-cmp",

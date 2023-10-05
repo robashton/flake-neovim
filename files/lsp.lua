@@ -96,7 +96,7 @@ local opts = {
 }
 
 require('rust-tools').setup(opts)
-
+ 
 --require("dapui").setup({})
 
 -- Configure Purescript
@@ -114,6 +114,8 @@ nvim_lsp['purescriptls'].setup {
     debounce_text_changes = 150,
   }
 }
+
+require'lspconfig'.tsserver.setup {}
 
 -- nvim_lsp['clangd'].setup{
 --   on_attach = on_attach

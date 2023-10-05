@@ -115,7 +115,9 @@ nvim_lsp['purescriptls'].setup {
   }
 }
 
-require'lspconfig'.tsserver.setup {}
+require'lspconfig'.tsserver.setup {
+  on_attach = on_attach
+}
 
 -- nvim_lsp['clangd'].setup{
 --   on_attach = on_attach
